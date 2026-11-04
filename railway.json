@@ -1,5 +1,10 @@
 {
-  "deploy": {
-    "preDeployCommand": "npx prisma migrate deploy"
-  }
+    "build": {
+        "builder": "NIXPACKS",
+        "buildCommand": "npm run build"
+    },
+    "deploy": {
+        "preDeployCommand": "npx prisma migrate deploy",
+        "startCommand": "npm start"
+    }
 }
