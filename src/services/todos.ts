@@ -17,6 +17,7 @@ export async function listTodos(options?: { page?: number; pageSize?: number }) 
   return { data: todos, meta: { page, pageSize, total } };
 }
 
+
 export async function getTodo(id: number): Promise<Todo | null> {
   return prisma.todo.findUnique({ where: { id } });
 }

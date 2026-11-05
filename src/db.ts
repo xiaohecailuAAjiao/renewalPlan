@@ -1,12 +1,16 @@
-import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/prisma/client.js";
 
-const connectionString = process.env.DATABASE_URL;
-if (!connectionString) {
-  throw new Error("缺少环境变量 DATABASE_URL，请检查项目根目录的 .env 文件");
-}
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
 
-const adapter = new PrismaPg({ connectionString });
+export const prisma = new PrismaClient({
+  adapter,
+  log: [{ emit: "event", level: "query" }],
+});
 
-export const prisma = new PrismaClient({ adapter })
+prisma.$on("query", (e) => {
+  console.log("SQL:", e.query);
+  console.log("Params:", e.params);
+});

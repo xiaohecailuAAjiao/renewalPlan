@@ -3,8 +3,11 @@ import * as todoService from "../services/todos.js";
 
 // 服务层全部是异步的：handler 必须 async + await，否则返回的是未决议的 Promise
 export async function list(req: Request, res: Response) {
-  const todos = await todoService.listTodos();
-  res.json({ data: todos });
+  const page = Math.max(1, Number(req.query.page) || 1);
+  const pageSize = Math.min(100, Math.max(1, Number(req.query.pageSize) || 20));
+
+  const result = await todoService.listTodos({ page, pageSize });
+  res.json(result);
 }
 
 export async function getById(req: Request, res: Response) {
